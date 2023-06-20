@@ -5,54 +5,25 @@
  *
  * @format
  */
-
 import React from 'react';
-import {
-  Button,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {useState} from 'react';
+import {SafeAreaView, StatusBar, Text, Button} from 'react-native';
+import RTNCalculator from 'rtn-calculator/js/NativeCalculator';
 
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
-
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+const App: () => JSX.Element = () => {
+  const [result, setResult] = useState<number | null>(null);
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <SafeAreaView>
+      <StatusBar barStyle={'dark-content'} />
+      <Text style={{marginLeft: 20, marginTop: 20}}>3+7={result ?? '??'}</Text>
+      <Button
+        title="Compute"
+        onPress={async () => {
+          const value = await RTNCalculator?.add(3, 7);
+          setResult(value ?? null);
+        }}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            display: 'flex',
-            alignContent: 'center',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Button
-            onPress={() => console.log('tapped')}
-            title="Open Native Code"
-            color="red"
-            accessibilityLabel="open native code"
-          />
-        </View>
-      </ScrollView>
     </SafeAreaView>
   );
-}
-
+};
 export default App;
