@@ -7,11 +7,23 @@
  */
 import React from 'react';
 import {useState} from 'react';
-import {SafeAreaView, StatusBar, Text, Button} from 'react-native';
-import RTNCalculator from 'rtn-calculator/js/NativeCalculator';
+import {
+  SafeAreaView,
+  StatusBar,
+  Text,
+  Button,
+  NativeModules,
+  ToastAndroid,
+} from 'react-native';
+// import RTNCalculator from 'rtn-calculator/js/NativeCalculator';
 
 const App: () => JSX.Element = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [result, setResult] = useState<number | null>(null);
+
+  const showToast = (title: string) => {
+    ToastAndroid.show(title, ToastAndroid.SHORT);
+  };
   return (
     <SafeAreaView>
       <StatusBar barStyle={'dark-content'} />
@@ -19,8 +31,14 @@ const App: () => JSX.Element = () => {
       <Button
         title="Compute"
         onPress={async () => {
-          const value = await RTNCalculator?.add(3, 7);
-          setResult(value ?? null);
+          // const value = await RTNCalculator?.add(3, 7);
+          // setResult(value ?? null);
+          NativeModules.HelloStarter.navigateToHelloActivity(
+            'Label dari RN',
+            (cb: any) => {
+              showToast(cb);
+            },
+          );
         }}
       />
     </SafeAreaView>
